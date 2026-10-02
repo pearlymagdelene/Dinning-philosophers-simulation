@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dining Philosophers Simulator</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark border-bottom border-secondary">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                🍽️ Dining Philosophers
+            </a>
+
+            <span class="navbar-text">
+                Operating Systems Simulation
+            </span>
+        </div>
+    </nav>
+
+
+    <!-- Hero -->
+    <section class="hero-section">
+        <div class="container text-center">
+
+            <span class="badge rounded-pill mb-3">
+                THREAD SYNCHRONIZATION
+            </span>
+
+            <h1 class="display-5 fw-bold">
+                Dining Philosophers Simulator
+            </h1>
+
+            <p class="lead text-secondary">
+                Explore resource sharing, synchronization and deadlocks
+                through an interactive simulation.
+            </p>
+
+        </div>
+    </section>
+
+
+    <main class="container pb-5">
+
+        <!-- Control Panel -->
+        <section class="card custom-card mb-4">
+
+            <div class="card-body p-4">
+
+                <div class="row align-items-end g-3">
+
+                    <div class="col-md-4">
+
+                        <label
+                            for="philosopherCount"
+                            class="form-label fw-semibold"
+                        >
+                            Number of Philosophers
+                        </label>
+
+                        <input
+                            type="number"
+                            id="philosopherCount"
+                            class="form-control form-control-lg"
+                            min="2"
+                            max="10"
+                            value="5"
+                        >
+
+                        <div class="form-text">
+                            Choose between 2 and 10 philosophers.
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-8">
+
+                        <div class="d-flex flex-wrap gap-2">
+
+                            <button
+                                id="startBtn"
+                                class="btn btn-primary"
+                            >
+                                ▶ Start
+                            </button>
+
+                            <button
+                                id="pauseBtn"
+                                class="btn btn-outline-light"
+                            >
+                                ⏸ Pause
+                            </button>
+
+                            <button
+                                id="resetBtn"
+                                class="btn btn-outline-secondary"
+                            >
+                                ↻ Reset
+                            </button>
+
+                            <button
+                                id="deadlockBtn"
+                                class="btn btn-danger"
+                            >
+                                ⚠ Demonstrate Deadlock
+                            </button>
+
+                            <button
+                                id="preventBtn"
+                                class="btn btn-success"
+                            >
+                                ✓ Prevent Deadlock
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- Simulation -->
+        <section class="card custom-card mb-4">
+
+            <div class="card-header simulation-header">
+
+                <div>
+                    <h4 class="mb-1">Live Simulation</h4>
+
+                    <small class="text-secondary">
+                        Watch philosophers compete for shared resources
+                    </small>
+                </div>
+
+                <span
+                    id="simulationStatus"
+                    class="badge status-badge"
+                >
+                    READY
+                </span>
+
+            </div>
+
+
+            <div class="card-body">
+
+                <div id="table">
+
+                    <!-- JavaScript will create philosophers here -->
+                    <div id="philosophers"></div>
+
+                    <!-- JavaScript will create forks here -->
+                    <div id="forks"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Status -->
+        <section class="card custom-card mb-4">
+
+            <div class="card-header">
+                <h4 class="mb-0">Philosopher Status</h4>
+            </div>
+
+            <div class="card-body">
+
+                <div
+                    id="statusPanel"
+                    class="row g-3"
+                >
+                    <!-- JavaScript creates status cards -->
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Legend -->
+        <section class="card custom-card mb-4">
+
+            <div class="card-header">
+                <h4 class="mb-0">States</h4>
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <div class="col-md-3 col-6">
+                        <div class="state-item">
+                            <span class="state-dot thinking"></span>
+                            <div>
+                                <strong>Thinking</strong>
+                                <small>Not using forks</small>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3 col-6">
+                        <div class="state-item">
+                            <span class="state-dot hungry"></span>
+                            <div>
+                                <strong>Hungry</strong>
+                                <small>Wants to eat</small>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3 col-6">
+                        <div class="state-item">
+                            <span class="state-dot eating"></span>
+                            <div>
+                                <strong>Eating</strong>
+                                <small>Using both forks</small>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3 col-6">
+                        <div class="state-item">
+                            <span class="state-dot deadlocked"></span>
+                            <div>
+                                <strong>Deadlocked</strong>
+                                <small>Waiting indefinitely</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Message -->
+        <div
+            id="message"
+            class="alert alert-secondary text-center"
+        >
+            Enter the number of philosophers and start the simulation.
+        </div>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="border-top border-secondary">
+
+        <div class="container text-center py-4">
+
+            <p class="mb-1 fw-semibold">
+                Dining Philosophers Simulation
+            </p>
+
+            <small class="text-secondary">
+                Operating Systems Project
+            </small>
+
+        </div>
+
+    </footer>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Your JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+</html>
