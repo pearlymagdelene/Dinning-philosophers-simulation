@@ -12,10 +12,10 @@
         rel="stylesheet"
     >
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dinning_style.css">
 </head>
 
-<body>
+<body data-resource-name="chopstick" data-resource-plural="chopsticks" data-resource-short="C" data-resource-motion="queue">
 
     <!-- Navbar -->
     <nav class="navbar navbar-dark border-bottom border-secondary">
@@ -27,6 +27,7 @@
             <span class="navbar-text">
                 Operating Systems Simulation
             </span>
+            <a class="btn btn-sm btn-outline-light" href="dinning_game.html">Enter Wizard Mode</a>
         </div>
     </nav>
 
@@ -87,6 +88,27 @@
 
 
                     <div class="col-md-8">
+
+                        <label for="preventionMode" class="form-label fw-semibold">
+                            Synchronization strategy
+                        </label>
+
+                        <select id="preventionMode" class="form-select mb-3">
+                            <option value="ordering">Resource ordering</option>
+                            <option value="limit">Limit contenders (N - 1)</option>
+                            <option value="unsafe">Naive selected-hand first</option>
+                        </select>
+
+                        <label for="firstChopstick" class="form-label fw-semibold">
+                            First chopstick
+                        </label>
+                        <select id="firstChopstick" class="form-select mb-1">
+                            <option value="left">Left-hand chopstick</option>
+                            <option value="right">Right-hand chopstick</option>
+                        </select>
+                        <div class="form-text mb-3">
+                            Used by contender-limit and naive modes; resource ordering uses a safe global order.
+                        </div>
 
                         <div class="d-flex flex-wrap gap-2">
 
@@ -160,7 +182,14 @@
 
             <div class="card-body">
 
-                <div id="table">
+                <div class="simulation-metrics" aria-live="polite">
+                    <span>Eating <strong id="eatingCount">0</strong></span>
+                    <span>Waiting <strong id="waitingCount">0</strong></span>
+                    <span>Free chopsticks <strong id="freeForkCount">5</strong></span>
+                    <span id="deadlockIndicator" class="deadlock-indicator">No deadlock</span>
+                </div>
+
+                <div id="table" class="classic-table">
 
                     <!-- JavaScript will create philosophers here -->
                     <div id="philosophers"></div>
@@ -212,7 +241,7 @@
                             <span class="state-dot thinking"></span>
                             <div>
                                 <strong>Thinking</strong>
-                                <small>Not using forks</small>
+                                <small>Not using chopsticks</small>
                             </div>
                         </div>
                     </div>
@@ -234,7 +263,7 @@
                             <span class="state-dot eating"></span>
                             <div>
                                 <strong>Eating</strong>
-                                <small>Using both forks</small>
+                                <small>Using both chopsticks</small>
                             </div>
                         </div>
                     </div>
@@ -242,10 +271,10 @@
 
                     <div class="col-md-3 col-6">
                         <div class="state-item">
-                            <span class="state-dot deadlocked"></span>
+                            <span class="state-dot waiting"></span>
                             <div>
-                                <strong>Deadlocked</strong>
-                                <small>Waiting indefinitely</small>
+                                <strong>Waiting</strong>
+                                <small>Blocked on a chopstick</small>
                             </div>
                         </div>
                     </div>
@@ -261,9 +290,27 @@
         <div
             id="message"
             class="alert alert-secondary text-center"
+            role="status"
+            aria-live="polite"
         >
             Enter the number of philosophers and start the simulation.
         </div>
+
+        <section class="concepts-section" aria-labelledby="conceptsTitle">
+            <div class="section-heading">
+                <span class="eyebrow">OPERATING SYSTEMS</span>
+                <h2 id="conceptsTitle">What the table demonstrates</h2>
+            </div>
+            <div class="concept-grid">
+                <article><h3>Processes and threads</h3><p>Each philosopher models a concurrent thread that alternates between doing work and requesting shared resources.</p></article>
+                <article><h3>Critical section</h3><p>Eating is the critical section. A philosopher enters it only after acquiring both neighboring forks.</p></article>
+                <article><h3>Mutual exclusion</h3><p>A chopstick has one owner at a time, so neighboring philosophers cannot use the same resource simultaneously.</p></article>
+                <article><h3>Synchronization</h3><p>The scheduler coordinates fork acquisition and release so independent threads share resources safely.</p></article>
+                <article><h3>Resource allocation</h3><p>The chopsticks are resources; the table shows which thread owns each one and which requests are blocked.</p></article>
+                <article><h3>Deadlock and starvation</h3><p>Deadlock is a circular wait with no progress. Starvation is prolonged waiting while other threads keep progressing.</p></article>
+                <article><h3>Deadlock prevention</h3><p>Global resource ordering removes circular wait. Limiting contenders to N - 1 prevents every philosopher holding one chopstick at once.</p></article>
+            </div>
+        </section>
 
     </main>
 
